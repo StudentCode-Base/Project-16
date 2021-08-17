@@ -5,25 +5,24 @@ var gameState=1;
 
 var knife,fruit ,monster,fruitGroup,monsterGroup, score,r,randomFruit, position;
 var knifeImage , fruit1, fruit2 ,fruit3,fruit4, monsterImage, gameOverImage;
+var knifeSwooshSound;
 
 function preload(){
   
   knifeImage = loadImage("knife.png");
-  monsterImage = loadAnimation("alien1.png","alien2.png")
+  monsterImage = loadAnimation("alien1.png","alien2.png");
   fruit1 = loadImage("fruit1.png");
   fruit2 = loadImage("fruit2.png");
   fruit3 = loadImage("fruit3.png");
   fruit4 = loadImage("fruit4.png");
-  gameOverImage = loadImage("gameover.png")
-  knifeSound = loadSound ('knifeSwoosh.mp3')
-gameoversound = loadSound ('gameover.mp3')
-  //load sound here
+  knifeSwooshSound = loadSound("knifeSwoosh.mp3");
+  gameOverImage = loadImage("gameover.png");
 }
 
 
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(600, 400);
   
   //creating sword
    knife=createSprite(40,200,20,20);
@@ -52,12 +51,12 @@ function draw() {
     // Move sword with mouse
     knife.y=World.mouseY;
     knife.x=World.mouseX;
-  
+
     // Increase score if sword touching fruit
     if(fruitGroup.isTouching(knife)){
-      knifeSound.play ()
       fruitGroup.destroyEach();
-      score=score+2
+      knifeSwooshSound.play();
+      score=score+2;
     }
     else
     {
@@ -66,7 +65,6 @@ function draw() {
         gameState=END;
         
         //add gameover sound here
-        gameoversound.play()
         
         fruitGroup.destroyEach();
         monsterGroup.destroyEach();
@@ -81,11 +79,14 @@ function draw() {
       }
     }
   }
+
+ 
   
   drawSprites();
   //Display score
   textSize(25);
   text("Score : "+ score,250,50);
+    
 }
 
 
@@ -95,7 +96,8 @@ function Monster(){
     monster.addAnimation("moving", monsterImage);
     monster.y=Math.round(random(100,550));
     //update below give line of code for increase monsterGroup speed by 10
-    monster.velocityX = -(8+score/10)
+   // monster.velocityX = -8;
+   monster.velocityX=-(4+(score/4));
     monster.setLifetime=50;
     
     monsterGroup.add(monster);
@@ -113,15 +115,17 @@ function fruits(){
     {
     fruit.x=600;
     //update below give line of code for increase fruitGroup speed by 4
-    fruit.velocityX=-(7+score/4)
-    }
+   // fruit.velocityX=-4
+   fruit.velocityX=-(1+(score/4));  
+  }
     else
     {
       if(position==2){
       fruit.x=0;
       
      //update below give line of code for increase fruitGroup speed by 4
-      fruit.velocityX= (7+score/4)
+      //fruit.velocityX= 4;
+      fruit.velocityX=(1+(score/4));
       }
     }
     
